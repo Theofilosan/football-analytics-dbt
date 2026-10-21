@@ -1,0 +1,11 @@
+version: 2
+models:
+  - name: stg_matches
+    description: "Staging model for matches data."
+    columns:
+      - name: match_id
+        description: "Unique identifier for the match."
+        tests:
+          - unique
+          - not_null
+          
