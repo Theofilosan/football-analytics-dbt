@@ -1,5 +1,6 @@
 with source as (
-    select *
+    select
+    *
     from {{ source('raw', 'events') }}
 ),
 
@@ -25,6 +26,7 @@ renamed as(
     e.type.id as event_type_id,
     e.type.name as event_type_name,
     e.team.id as team_id,
+    e.team.name as team_name,
     e.possession_team.id                                as possession_team_id,
     e.possession_team.name                              as possession_team_name,
     e.play_pattern.name                                 as play_pattern_name,
@@ -40,4 +42,3 @@ renamed as(
 )
 
 select * from renamed
-
