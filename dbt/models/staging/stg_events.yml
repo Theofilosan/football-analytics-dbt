@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: stg_events
+    description: "One row per event per match, common columns only; event-specific structs are handled in stg_passes, stg_shots, etc."
+    columns:
+      - name: id
+        description: "Event UUID"
+        data_tests:
+          - unique
+          - not_null
+      - name: match_id
+        description: "Match id, parsed from the source file name"
+        data_tests:
+          - not_null
+      - name: event_type_name
+        data_tests:
+          - not_null
