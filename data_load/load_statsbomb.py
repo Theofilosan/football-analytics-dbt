@@ -3,7 +3,7 @@
 Raw JSON is kept as is. The only column added is the source file name.
 Usage:
     python data_load/load_statsbomb.py
-    COMPETITION_ID=55 SEASON_ID=43 python data_load/load_statsbomb.py
+    COMPETITION_ID=43 SEASON_ID=106 python data_load/load_statsbomb.py
 """
 import json
 import os
@@ -13,8 +13,8 @@ import duckdb
 import requests
 
 BASE = "https://raw.githubusercontent.com/statsbomb/open-data/master/data"
-COMPETITION_ID = int(os.environ.get("COMPETITION_ID", 43))  # FIFA World Cup
-SEASON_ID = int(os.environ.get("SEASON_ID", 106))  # 2022
+COMPETITION_ID = int(os.environ.get("COMPETITION_ID", 55))  # UEFA Euro
+SEASON_ID = int(os.environ.get("SEASON_ID", 282))  # 2024
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "data" / "raw"
 DB = ROOT / "warehouse.duckdb"
@@ -29,12 +29,23 @@ def fetch(path: str, dest: Path) -> None:
     dest.write_bytes(r.content)
 
 
+def prune_cache(match_ids: list) -> None:
+    # events and lineups are loaded with a glob, so drop cached files from
+    # other competitions to keep raw.events and raw.lineups single-competition
+    keep = {f"{mid}.json" for mid in match_ids}
+    for sub in ("lineups", "events"):
+        for cached in (RAW / sub).glob("*.json"):
+            if cached.name not in keep:
+                cached.unlink()
+
+
 def main() -> None:
     fetch("competitions.json", RAW / "competitions.json")
     matches_file = RAW / "matches" / f"{COMPETITION_ID}_{SEASON_ID}.json"
     fetch(f"matches/{COMPETITION_ID}/{SEASON_ID}.json", matches_file)
 
     match_ids = [m["match_id"] for m in json.loads(matches_file.read_text())]
+    prune_cache(match_ids)
     for mid in match_ids:
         fetch(f"lineups/{mid}.json", RAW / "lineups" / f"{mid}.json")
         fetch(f"events/{mid}.json", RAW / "events" / f"{mid}.json")
