@@ -6,12 +6,12 @@ Data: [StatsBomb Open Data](https://github.com/statsbomb/open-data). Provided by
 
 ## Status
 
-Milestone 1 of 5: loader and project skeleton. No models yet.
+Milestone 2 of 5: staging models. The loader, dbt skeleton and CI are done. Staging covers matches, lineups and events.
 
 | # | Milestone | State |
 |---|---|---|
-| 1 | Loader, dbt skeleton, CI | in progress |
-| 2 | Staging and intermediate models | todo |
+| 1 | Loader, dbt skeleton, CI | done |
+| 2 | Staging and intermediate models | in progress (stg_matches, stg_lineups, stg_events done) |
 | 3 | Marts and tests | todo |
 | 4 | Evidence dashboard on GitHub Pages | todo |
 | 5 | Docs and README polish | todo |
@@ -51,6 +51,16 @@ COMPETITION_ID=55 SEASON_ID=43 make load   # UEFA Euro 2020
 ## Raw tables
 
 `raw.competitions`, `raw.matches`, `raw.lineups`, `raw.events`. The loader keeps the JSON structure as is and adds the source file name. Cleaning happens in dbt, not in the loader.
+
+## Models
+
+Staging models in `dbt/models/staging/`, each with tests in a matching `.yml` file:
+
+- `stg_matches`: one row per match
+- `stg_lineups`: one row per player per team per match
+- `stg_events`: one row per match event
+
+Intermediate models, marts and the dashboard are not built yet.
 
 ## Data credit
 
