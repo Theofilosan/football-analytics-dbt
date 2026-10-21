@@ -38,15 +38,17 @@ Requires Python 3.10+.
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-make load        # downloads the FIFA World Cup 2022 files into data/raw and builds warehouse.duckdb
+make load        # downloads the UEFA Euro 2024 files into data/raw and builds warehouse.duckdb
 make check       # dbt debug + dbt parse
 ```
 
 Pick another competition with `COMPETITION_ID` and `SEASON_ID`. The list is in `competitions.json` in the StatsBomb repo.
 
 ```bash
-COMPETITION_ID=55 SEASON_ID=43 make load   # UEFA Euro 2020
+COMPETITION_ID=43 SEASON_ID=106 make load   # FIFA World Cup 2022
 ```
+
+Switching competitions re-downloads only what is missing. The loader removes cached event and lineup files from other competitions first, so the raw tables always hold a single competition.
 
 ## Raw tables
 
