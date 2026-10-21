@@ -1,0 +1,14 @@
+version: 2
+models:
+  - name: stg_lineups
+    description: "one row per player per team per match, lineup array unnested"
+    columns:
+      - name: match_id
+        data_tests:
+          - not_null
+      - name: team_id
+        data_tests:
+          - not_null
+      - name: player_id
+        data_tests:
+          - not_null
