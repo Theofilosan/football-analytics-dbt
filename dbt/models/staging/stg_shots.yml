@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: stg_shots
+    description: "One row per shot event per match; filtered from raw events on type.name = 'Shot'"
+    columns:
+      - name: id
+        description: "Event UUID of the shot"
+        data_tests:
+          - unique
+          - not_null
+      - name: match_id
+        data_tests:
+          - not_null
+      - name: player_id
+        data_tests:
+          - not_null
+      - name: xg
+        description: "StatsBomb expected goals value for the shot"
+        data_tests:
+          - not_null
+      - name: outcome_name
+        data_tests:
+          - not_null
