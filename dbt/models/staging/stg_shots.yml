@@ -22,3 +22,17 @@ models:
       - name: outcome_name
         data_tests:
           - not_null
+      - name: team_id
+        data_tests:
+          - not_null
+      - name: team_name
+        data_tests:
+          - not_null
+      - name: location_x
+        description: "Shot start x coordinate (pitch is 120 x 80)"
+        data_tests:
+          - not_null
+      - name: location_y
+        description: "Shot start y coordinate"
+        data_tests:
+          - not_null
