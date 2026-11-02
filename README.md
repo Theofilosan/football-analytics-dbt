@@ -6,12 +6,12 @@ Data: [StatsBomb Open Data](https://github.com/statsbomb/open-data). Provided by
 
 ## Status
 
-Milestone 2 of 5: staging models. The loader, dbt skeleton and CI are done. Staging covers matches, lineups and events.
+Milestone 2 of 5: staging and intermediate models. The loader, dbt skeleton and CI are done. Staging covers matches, lineups, events and shots. Intermediate models are next.
 
 | # | Milestone | State |
 |---|---|---|
 | 1 | Loader, dbt skeleton, CI | done |
-| 2 | Staging and intermediate models | in progress (stg_matches, stg_lineups, stg_events done) |
+| 2 | Staging and intermediate models | in progress (staging done: stg_matches, stg_lineups, stg_events, stg_shots; intermediate next) |
 | 3 | Marts and tests | todo |
 | 4 | Evidence dashboard on GitHub Pages | todo |
 | 5 | Docs and README polish | todo |
@@ -40,6 +40,7 @@ python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 make load        # downloads the UEFA Euro 2024 files into data/raw and builds warehouse.duckdb
 make check       # dbt debug + dbt parse
+(cd dbt && DBT_PROFILES_DIR=. dbt build)   # build the models and run the tests
 ```
 
 Pick another competition with `COMPETITION_ID` and `SEASON_ID`. The list is in `competitions.json` in the StatsBomb repo.
@@ -61,6 +62,7 @@ Staging models in `dbt/models/staging/`, each with tests in a matching `.yml` fi
 - `stg_matches`: one row per match
 - `stg_lineups`: one row per player per team per match
 - `stg_events`: one row per match event
+- `stg_shots`: one row per shot event, with team, player, shot location, xG and outcome (includes penalty shootout shots in period 5)
 
 Intermediate models, marts and the dashboard are not built yet.
 
