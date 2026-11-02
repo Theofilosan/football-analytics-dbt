@@ -34,7 +34,15 @@ joined as (
         matches.match_date,
         matches.stage_name,
         matches.home_team_name,
-        matches.away_team_name
+        matches.away_team_name,
+
+        -- shooting team's perspective
+        shots.team_id = matches.home_team_id   as is_home,
+        case
+            when shots.team_id = matches.home_team_id
+                then matches.away_team_name
+            else matches.home_team_name
+        end                                    as opponent_team_name
 
     from shots
     left join matches
