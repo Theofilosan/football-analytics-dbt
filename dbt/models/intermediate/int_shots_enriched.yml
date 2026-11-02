@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: int_shots_enriched
+    description: "One row per shot, enriched with match context and the shooting team's perspective. Shootout shots are kept and flagged with is_shootout."
+    columns:
+      - name: id
+        description: "Event UUID of the shot"
+        data_tests:
+          - unique
+          - not_null
+      - name: match_id
+        data_tests:
+          - not_null
+      - name: match_date
+        description: "Date of the match, from stg_matches"
+        data_tests:
+          - not_null
+      - name: is_goal
+        description: "True when the shot outcome is Goal, including shootout goals. Filter on is_shootout = false for goals from shots during the match. Does not include own goals"
+        data_tests:
+          - not_null
+      - name: is_shootout
+        description: "True when the shot was taken in period 5 (penalty shootout). Extra-time shots (periods 3 and 4) are false."
+        data_tests:
+          - not_null
+      - name: is_home
+        description: "True when the shooting team is the home team of the match"
+        data_tests:
+          - not_null
+      - name: opponent_team_name
+        description: "Name of the team the shot was taken against: away team if the shooter is home, otherwise home team"
+        data_tests:
+          - not_null
